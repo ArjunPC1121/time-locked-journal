@@ -39,7 +39,7 @@ function writeMessage() {
         document.getElementById('write-message-status').innerText = "Please enter message and unlock time.";
         return;
     }
-    // Defensive: Parse unlockTime to Date and ensure it's valid
+    
     const unlockDate = new Date(unlockTime);
     if (isNaN(unlockDate.getTime())) {
         document.getElementById('write-message-status').innerText = "Invalid unlock date/time.";
@@ -80,7 +80,7 @@ function fetchMessages() {
             }
             querySnapshot.forEach(doc => {
                 const data = doc.data();
-                // Defensive: handle both Timestamp and string
+                
                 let unlockDate;
                 if (data.unlock_time && typeof data.unlock_time.toDate === "function") {
                     unlockDate = data.unlock_time.toDate();
