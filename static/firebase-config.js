@@ -1,4 +1,3 @@
-// Replace with your Firebase config
 const firebaseConfig = {
     apiKey: "AIzaSyC7SvEI1ST8qnMtrqVX0tBwM7GlXfeDfvo",
     authDomain: "time-lock-journal-final.firebaseapp.com",
