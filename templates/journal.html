@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Your Time-Locked Journal</h2>
+    <button onclick="logout()">Logout</button>
+    <div id="journal-section">
+        <h3>Write a Message</h3>
+        <textarea id="message" placeholder="Write your message here..."></textarea><br>
+        <label>Unlock Date & Time:</label>
+        <input type="datetime-local" id="unlock_time"><br>
+        <button onclick="writeMessage()">Save Message</button>
+        <div id="write-message-status"></div>
+    </div>
+    <div id="messages-section">
+        <h3>Your Messages</h3>
+        <ul id="messages-list"></ul>
+    </div>
+</div>
+<script src="/static/main.js"></script>
+<script>
+    // Redirect to login if not authenticated
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (!user) {
+            window.location.href = "/login";
+        } else {
+            fetchMessages();
+        }
+    });
+</script>
+{% endblock %}

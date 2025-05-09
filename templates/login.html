@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Time-Locked Journal</h2>
+    <div id="auth-section">
+        <input type="email" id="email" placeholder="Email"><br>
+        <input type="password" id="password" placeholder="Password"><br>
+        <button onclick="login()">Login</button>
+        <button onclick="register()">Register</button>
+        <div id="auth-message"></div>
+    </div>
+</div>
+<script src="/static/main.js"></script>
+<script>
+    // Redirect to journal if already logged in
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            window.location.href = "/journal";
+        }
+    });
+</script>
+{% endblock %}

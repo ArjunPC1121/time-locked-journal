@@ -1,0 +1,24 @@
+# Python/Flask
+*.pyc
+__pycache__/
+instance/
+.venv/
+venv/
+.env
+*.db
+*.sqlite3
+.pytest_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Node/npm (if ever used)
+node_modules/
