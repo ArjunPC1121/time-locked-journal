@@ -39,7 +39,6 @@ function writeMessage() {
         document.getElementById('write-message-status').innerText = "Please enter message and unlock time.";
         return;
     }
-    
     const unlockDate = new Date(unlockTime);
     if (isNaN(unlockDate.getTime())) {
         document.getElementById('write-message-status').innerText = "Invalid unlock date/time.";
@@ -62,6 +61,57 @@ function writeMessage() {
     });
 }
 
+// Delete a single message by document ID
+function deleteMessage(docId) {
+    firebase.firestore().collection("messages").doc(docId).delete()
+        .then(() => {
+            fetchMessages();
+        })
+        .catch(error => {
+            alert("Error deleting message: " + error.message);
+        });
+}
+
+// Delete all unlocked messages for the current user
+function clearAllReadMessages() {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    if (!confirm("Are you sure you want to delete all read messages? This cannot be undone.")) return;
+
+    firebase.firestore().collection("messages")
+        .where("user_id", "==", user.uid)
+        .orderBy("unlock_time")
+        .get()
+        .then(querySnapshot => {
+            const now = new Date();
+            const batch = firebase.firestore().batch();
+            let count = 0;
+            querySnapshot.forEach(doc => {
+                const data = doc.data();
+                let unlockDate;
+                if (data.unlock_time && typeof data.unlock_time.toDate === "function") {
+                    unlockDate = data.unlock_time.toDate();
+                } else if (typeof data.unlock_time === "string" || typeof data.unlock_time === "number") {
+                    unlockDate = new Date(data.unlock_time);
+                }
+                if (unlockDate && unlockDate <= now) {
+                    batch.delete(doc.ref);
+                    count++;
+                }
+            });
+            if (count === 0) {
+                alert("No read messages to delete.");
+                return;
+            }
+            batch.commit().then(() => {
+                fetchMessages();
+            });
+        })
+        .catch(error => {
+            alert("Error clearing messages: " + error.message);
+        });
+}
+
 // Fetch and display messages
 function fetchMessages() {
     const user = firebase.auth().currentUser;
@@ -80,7 +130,6 @@ function fetchMessages() {
             }
             querySnapshot.forEach(doc => {
                 const data = doc.data();
-                
                 let unlockDate;
                 if (data.unlock_time && typeof data.unlock_time.toDate === "function") {
                     unlockDate = data.unlock_time.toDate();
@@ -93,13 +142,21 @@ function fetchMessages() {
                 const li = document.createElement('li');
                 if (!unlockDate || isNaN(unlockDate.getTime())) {
                     li.className = "locked";
-                    li.innerHTML = `<b>Error:</b> Invalid unlock time for this message.`;
+                    li.innerHTML = `<div class="message-content"><div><b>Error:</b> Invalid unlock time for this message.</div></div>`;
                 } else if (unlockDate > now) {
                     li.className = "locked";
-                    li.innerHTML = `<b>Locked until:</b> ${unlockDate.toLocaleString()} <br> <i>(Message is locked)</i>`;
+                    li.innerHTML = `<div class="message-content"><div><b>Locked until:</b> ${unlockDate.toLocaleString()} <br> <i>(Message is locked)</i></div></div>`;
                 } else {
                     li.className = "unlocked";
-                    li.innerHTML = `<b>Unlocked at:</b> ${unlockDate.toLocaleString()} <br> <b>Message:</b> ${data.message}`;
+                    li.innerHTML = `
+                        <div class="message-content">
+                            <div>
+                                <b>Unlocked at:</b> ${unlockDate.toLocaleString()} <br>
+                                <b>Message:</b> ${data.message}
+                            </div>
+                            <button class="delete-btn" onclick="deleteMessage('${doc.id}')">Delete</button>
+                        </div>
+                    `;
                 }
                 messagesList.appendChild(li);
             });

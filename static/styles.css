@@ -1,4 +1,3 @@
-
 body, h1, h2, h3, p, ul, li, input, button, textarea, label {
     margin: 0;
     padding: 0;
@@ -111,38 +110,116 @@ button:hover {
 
 #messages-section {
     margin-top: 2em;
+    position: relative;
+}
+
+/* Ensure the #clear-all-btn is always outside message cards */
+#clear-all-btn {
+    display: block;
+    float: none;
+    margin: 0 0 1em auto;
+    background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
+    color: #fff;
+    border: none;
+    border-radius: 9px;
+    padding: 0.5em 1.4em;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+    transition: background 0.2s, transform 0.1s;
+    max-width: 70%;
+    /* Ensures button doesn't take full width on mobile */
+}
+
+#clear-all-btn:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+#messages-section {
+    position: relative;
 }
 
 #messages-list {
-    list-style: none;
-    padding: 0;
+    clear: both;
 }
 
+/* Extra: Prevent message cards from wrapping floated elements */
 #messages-list li {
     background: #f8fafc;
-    border-radius: 12px;
-    margin-bottom: 1.1em;
-    padding: 1em 1em 0.8em 1em;
-    box-shadow: 0 1px 4px rgba(99, 102, 241, 0.07);
-    transition: background 0.2s, box-shadow 0.2s;
-    word-break: break-word;
+    border-radius: 14px;
+    margin-bottom: 1.4em;
+    padding: 0.9em 1em 0.9em 1.2em;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.10);
+    border: 1.5px solid #e0e7ff;
+    position: relative;
+    transition: box-shadow 0.2s, border 0.2s;
 }
 
 #messages-list li.unlocked {
-    border-left: 4px solid #4f46e5;
+    border-left: 6px solid #4f46e5;
     background: #eef2ff;
     color: #22223b;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.13);
 }
 
 #messages-list li.locked {
-    border-left: 4px solid #a5b4fc;
+    border-left: 6px solid #a5b4fc;
     background: #f1f5f9;
     color: #9ca3af;
     font-style: italic;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.07);
+}
+
+#messages-list li:not(:last-child)::after {
+    content: "";
+    display: block;
+    height: 0;
+    border-bottom: 1.5px dashed #d1d5db;
+    margin: 1em 0 0 0;
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    bottom: -0.7em;
+    z-index: 0;
 }
 
 #messages-list li b {
     color: #4f46e5;
+}
+
+/* Flexbox for message content and button alignment */
+.message-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+}
+
+.message-content > div {
+    flex: 1 1 0;
+    min-width: 0;
+    word-break: break-word;
+}
+
+.delete-btn {
+    background: linear-gradient(90deg, #f43f5e 0%, #e11d48 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.3em 1em;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    margin-left: 1em;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.delete-btn:hover {
+    background: linear-gradient(90deg, #e11d48 0%, #f43f5e 100%);
+    transform: scale(1.05);
 }
 
 @media (max-width: 600px) {
@@ -153,5 +230,15 @@ button:hover {
     }
     body {
         align-items: stretch;
+    }
+    .message-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5em;
+    }
+    #clear-all-btn {
+        float: none;
+        width: 100%;
+        margin-bottom: 1em;
     }
 }
