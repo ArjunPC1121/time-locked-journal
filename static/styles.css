@@ -1,31 +1,157 @@
+
+body, h1, h2, h3, p, ul, li, input, button, textarea, label {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #e0e7ff 0%, #fff7f0 100%);
+    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    color: #22223b;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
+
 .container {
-    background: white;
-    padding: 2em;
-    margin: 2em auto;
-    width: 400px;
-    box-shadow: 0 0 10px #ccc;
-    border-radius: 8px;
-}
-input, textarea {
+    background: #fff;
+    margin: 3em auto;
+    padding: 2.5em 2em 2em 2em;
+    border-radius: 22px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.12);
+    max-width: 430px;
     width: 100%;
+    min-height: 500px;
+    transition: box-shadow 0.3s;
+}
+
+.container:hover {
+    box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.18);
+}
+
+h2 {
+    text-align: center;
+    font-weight: 700;
+    color: #3a3a60;
+    margin-bottom: 1.5em;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: #4f46e5;
     margin-bottom: 1em;
-    padding: 0.5em;
+    font-size: 1.15em;
+    font-weight: 600;
 }
+
+label {
+    font-size: 1em;
+    color: #7c7c7c;
+    margin-bottom: 0.2em;
+    display: block;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="datetime-local"],
+textarea {
+    width: 100%;
+    padding: 0.8em 1em;
+    margin-bottom: 1.1em;
+    border: 1.5px solid #c7d2fe;
+    border-radius: 9px;
+    background: #f3f4f6;
+    font-size: 1em;
+    transition: border 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border: 1.5px solid #6366f1;
+    box-shadow: 0 0 0 2px #c7d2fe;
+    background: #fff;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
 button {
-    padding: 0.5em 1em;
+    background: linear-gradient(90deg, #6366f1 0%, #4f46e5 100%);
+    color: #fff;
+    padding: 0.7em 1.6em;
+    border: none;
+    border-radius: 9px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
     margin-right: 0.5em;
+    margin-bottom: 1em;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+    transition: background 0.2s, transform 0.1s;
 }
+
+button:hover {
+    background: linear-gradient(90deg, #4f46e5 0%, #6366f1 100%);
+    transform: translateY(-2px) scale(1.03);
+}
+
+#auth-message,
+#write-message-status {
+    color: #e11d48;
+    margin-bottom: 1em;
+    text-align: center;
+    min-height: 1.2em;
+    font-size: 0.98em;
+}
+
+#messages-section {
+    margin-top: 2em;
+}
+
 #messages-list {
     list-style: none;
     padding: 0;
 }
-.locked {
-    color: #aaa;
+
+#messages-list li {
+    background: #f8fafc;
+    border-radius: 12px;
+    margin-bottom: 1.1em;
+    padding: 1em 1em 0.8em 1em;
+    box-shadow: 0 1px 4px rgba(99, 102, 241, 0.07);
+    transition: background 0.2s, box-shadow 0.2s;
+    word-break: break-word;
 }
-.unlocked {
-    color: #333;
+
+#messages-list li.unlocked {
+    border-left: 4px solid #4f46e5;
+    background: #eef2ff;
+    color: #22223b;
+}
+
+#messages-list li.locked {
+    border-left: 4px solid #a5b4fc;
+    background: #f1f5f9;
+    color: #9ca3af;
+    font-style: italic;
+}
+
+#messages-list li b {
+    color: #4f46e5;
+}
+
+@media (max-width: 600px) {
+    .container {
+        max-width: 98vw;
+        padding: 1.2em 0.6em;
+        margin: 1em 0.2em;
+    }
+    body {
+        align-items: stretch;
+    }
 }
